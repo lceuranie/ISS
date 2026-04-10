@@ -61,13 +61,19 @@
             <rect x="0" y="0" width="1000" height="500" class="map-grid"></rect>
 
             <g class="continent-layer">
-              <path d="M104 120 L180 88 L275 92 L320 126 L350 178 L336 235 L278 262 L236 244 L214 212 L170 206 L132 182 L116 146 Z"></path>
-              <path d="M286 278 L332 294 L356 346 L336 420 L308 454 L272 428 L258 374 L268 326 Z"></path>
-              <path d="M432 108 L502 82 L610 84 L682 114 L734 162 L744 220 L706 242 L668 224 L648 184 L588 172 L554 190 L534 232 L508 238 L484 214 L470 162 Z"></path>
-              <path d="M620 250 L660 270 L694 332 L712 402 L686 444 L636 428 L612 378 L598 324 Z"></path>
-              <path d="M774 314 L834 304 L894 330 L920 366 L902 404 L842 420 L786 398 L756 350 Z"></path>
-              <path d="M844 132 L882 122 L918 142 L910 170 L874 184 L838 166 Z"></path>
-              <path d="M72 374 L164 360 L236 388 L250 438 L202 468 L112 456 L64 420 Z"></path>
+              <path d="M84 112 L126 88 L176 80 L226 82 L274 98 L316 124 L336 156 L334 182 L308 198 L280 196 L258 212 L228 234 L194 228 L168 210 L138 206 L108 188 L88 158 L78 132 Z"></path>
+              <path d="M260 58 L286 48 L318 56 L330 78 L316 100 L288 94 L266 76 Z"></path>
+              <path d="M250 252 L282 264 L306 292 L320 334 L312 372 L292 422 L270 456 L252 442 L240 408 L232 366 L236 322 Z"></path>
+              <path d="M448 102 L486 86 L532 86 L566 96 L592 116 L612 126 L632 120 L660 124 L690 140 L724 162 L756 194 L758 220 L730 232 L706 220 L694 196 L668 182 L644 180 L626 168 L602 160 L572 164 L550 184 L528 194 L502 206 L480 194 L462 170 L448 144 Z"></path>
+              <path d="M534 210 L566 222 L592 256 L610 300 L622 340 L616 390 L598 430 L568 422 L548 388 L534 346 L522 302 L516 254 Z"></path>
+              <path d="M616 214 L634 208 L648 220 L642 240 L624 242 L614 228 Z"></path>
+              <path d="M786 318 L820 306 L856 310 L898 330 L922 360 L910 390 L874 402 L838 396 L802 380 L780 348 Z"></path>
+              <path d="M836 122 L862 112 L890 118 L912 136 L906 156 L878 166 L850 156 L832 138 Z"></path>
+              <path d="M18 424 L112 414 L216 420 L332 432 L468 438 L626 434 L770 426 L914 430 L982 442 L982 482 L18 482 Z"></path>
+            </g>
+
+            <g class="track-layer">
+              <path id="iss-ground-track" class="iss-ground-track" d=""></path>
             </g>
 
             <g class="orbit-layer">
@@ -78,6 +84,7 @@
 
           <div class="map-legend">
             <span><i></i> ISS real-time position</span>
+            <span><b></b> One-orbit ground track</span>
             <span>Projection: Equirectangular</span>
           </div>
         </div>
@@ -127,6 +134,6 @@
     </main>
   </div>
 
-  <script src="./app.js"></script>
+  <script src="./dashboard.js"></script>
 </body>
 </html>
