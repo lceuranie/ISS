@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISS Mission Operations Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Mission Control</p>
+        <h1>International Space Station Operations Dashboard</h1>
+        <p class="hero-copy">
+          Live orbital telemetry, global position tracking, and current crew status in one continuous operations view.
+        </p>
+      </div>
+
+      <div class="status-cluster">
+        <div class="status-card">
+          <span class="status-label">Network</span>
+          <strong id="network-status">Connecting</strong>
+        </div>
+        <div class="status-card">
+          <span class="status-label">Telemetry</span>
+          <strong id="telemetry-timestamp">Awaiting data</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-grid">
+      <section class="panel map-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Live Track</p>
+            <h2>ISS Position</h2>
+          </div>
+          <div class="coord-readout">
+            <span id="latitude-readout">Lat --</span>
+            <span id="longitude-readout">Lon --</span>
+          </div>
+        </div>
+
+        <div class="map-frame">
+          <svg class="world-map" viewBox="0 0 1000 500" aria-label="World map with ISS position">
+            <defs>
+              <pattern id="grid" width="83.33" height="83.33" patternUnits="userSpaceOnUse">
+                <path d="M 83.33 0 L 0 0 0 83.33" fill="none" pathLength="1"></path>
+              </pattern>
+              <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#7df9ff" stop-opacity="0.85"></stop>
+                <stop offset="100%" stop-color="#7df9ff" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+
+            <rect x="0" y="0" width="1000" height="500" class="map-ocean"></rect>
+            <rect x="0" y="0" width="1000" height="500" class="map-grid"></rect>
+
+            <g class="continent-layer">
+              <path d="M104 120 L180 88 L275 92 L320 126 L350 178 L336 235 L278 262 L236 244 L214 212 L170 206 L132 182 L116 146 Z"></path>
+              <path d="M286 278 L332 294 L356 346 L336 420 L308 454 L272 428 L258 374 L268 326 Z"></path>
+              <path d="M432 108 L502 82 L610 84 L682 114 L734 162 L744 220 L706 242 L668 224 L648 184 L588 172 L554 190 L534 232 L508 238 L484 214 L470 162 Z"></path>
+              <path d="M620 250 L660 270 L694 332 L712 402 L686 444 L636 428 L612 378 L598 324 Z"></path>
+              <path d="M774 314 L834 304 L894 330 L920 366 L902 404 L842 420 L786 398 L756 350 Z"></path>
+              <path d="M844 132 L882 122 L918 142 L910 170 L874 184 L838 166 Z"></path>
+              <path d="M72 374 L164 360 L236 388 L250 438 L202 468 L112 456 L64 420 Z"></path>
+            </g>
+
+            <g class="orbit-layer">
+              <circle id="iss-glow" cx="500" cy="250" r="26" class="iss-glow"></circle>
+              <circle id="iss-marker" cx="500" cy="250" r="8" class="iss-marker"></circle>
+            </g>
+          </svg>
+
+          <div class="map-legend">
+            <span><i></i> ISS real-time position</span>
+            <span>Projection: Equirectangular</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel telemetry-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Orbit Metrics</p>
+            <h2>Orbital Parameters</h2>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span class="metric-label">Altitude</span>
+            <strong id="altitude-value">-- km</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Velocity</span>
+            <strong id="velocity-value">-- km/h</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Orbit Period</span>
+            <strong id="period-value">-- min</strong>
+          </article>
+        </div>
+
+        <div class="telemetry-note">
+          Orbit period is derived from the current altitude using standard Earth gravitational parameters.
+        </div>
+      </section>
+
+      <section class="panel crew-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Expedition Status</p>
+            <h2>Current Crew Manifest</h2>
+          </div>
+          <span class="crew-count" id="crew-count">0 crew</span>
+        </div>
+
+        <div id="crew-list" class="crew-list" aria-live="polite">
+          <p class="empty-state">Loading current ISS crew manifest...</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
