@@ -45,7 +45,23 @@
           </div>
         </div>
 
-        <div class="map-frame">
+        <div class="map-frame" id="map-frame">
+          <div id="iss-hover-card" class="iss-hover-card" hidden>
+            <p class="panel-kicker">ISS At A Glance</p>
+            <h3>International Space Station</h3>
+            <div class="iss-spec-grid">
+              <span>Width <strong>109 m</strong></span>
+              <span>Length <strong>73 m</strong></span>
+              <span>Height <strong>20 m</strong></span>
+              <span>Pressurized Volume <strong>916 m3</strong></span>
+              <span>Total Mass <strong>420,000 kg</strong></span>
+            </div>
+            <div class="iss-hover-links">
+              <a href="https://www.nasa.gov/international-space-station/international-space-station-assembly-elements/" target="_blank" rel="noreferrer">Assembly elements</a>
+              <a href="https://www.nasa.gov/feature/iss-virtual-tour/" target="_blank" rel="noreferrer">Virtual tour</a>
+            </div>
+          </div>
+
           <svg class="world-map" viewBox="0 0 1000 500" aria-label="World map with ISS position">
             <defs>
               <pattern id="grid" width="83.33" height="83.33" patternUnits="userSpaceOnUse">
@@ -59,6 +75,8 @@
 
             <rect x="0" y="0" width="1000" height="500" class="map-ocean"></rect>
             <rect x="0" y="0" width="1000" height="500" class="map-grid"></rect>
+            <path id="night-overlay" class="night-overlay" d=""></path>
+            <path id="terminator-line" class="terminator-line" d=""></path>
 
             <g class="continent-layer">
               <path d="M84 112 L126 88 L176 80 L226 82 L274 98 L316 124 L336 156 L334 182 L308 198 L280 196 L258 212 L228 234 L194 228 L168 210 L138 206 L108 188 L88 158 L78 132 Z"></path>
@@ -78,7 +96,7 @@
 
             <g class="orbit-layer">
               <circle id="iss-glow" cx="500" cy="250" r="26" class="iss-glow"></circle>
-              <circle id="iss-marker" cx="500" cy="250" r="8" class="iss-marker"></circle>
+              <circle id="iss-marker" cx="500" cy="250" r="8" class="iss-marker" tabindex="0" role="button" aria-label="ISS facts"></circle>
             </g>
           </svg>
 
@@ -88,34 +106,34 @@
             <span>Projection: Equirectangular</span>
           </div>
         </div>
-      </section>
 
-      <section class="panel telemetry-panel">
-        <div class="panel-heading">
-          <div>
-            <p class="panel-kicker">Orbit Metrics</p>
-            <h2>Orbital Parameters</h2>
+        <section class="telemetry-panel">
+          <div class="panel-heading telemetry-heading">
+            <div>
+              <p class="panel-kicker">Orbit Metrics</p>
+              <h2>Orbital Parameters</h2>
+            </div>
           </div>
-        </div>
 
-        <div class="metric-grid">
-          <article class="metric-card">
-            <span class="metric-label">Altitude</span>
-            <strong id="altitude-value">-- km</strong>
-          </article>
-          <article class="metric-card">
-            <span class="metric-label">Velocity</span>
-            <strong id="velocity-value">-- km/h</strong>
-          </article>
-          <article class="metric-card">
-            <span class="metric-label">Orbit Period</span>
-            <strong id="period-value">-- min</strong>
-          </article>
-        </div>
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span class="metric-label">Altitude</span>
+              <strong id="altitude-value">-- km</strong>
+            </article>
+            <article class="metric-card">
+              <span class="metric-label">Velocity</span>
+              <strong id="velocity-value">-- km/h</strong>
+            </article>
+            <article class="metric-card">
+              <span class="metric-label">Orbit Period</span>
+              <strong id="period-value">-- min</strong>
+            </article>
+          </div>
 
-        <div class="telemetry-note">
-          Orbit period is derived from the current altitude using standard Earth gravitational parameters.
-        </div>
+          <div class="telemetry-note">
+            Orbit period is derived from the current altitude using standard Earth gravitational parameters.
+          </div>
+        </section>
       </section>
 
       <section class="panel crew-panel">
@@ -131,9 +149,126 @@
           <p class="empty-state">Loading current ISS crew manifest...</p>
         </div>
       </section>
+
+      <section class="panel logistics-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Flight Support</p>
+            <h2>Logistics &amp; Visiting Vehicles</h2>
+          </div>
+        </div>
+
+        <div class="info-stack">
+          <article class="info-card">
+            <span class="metric-label">Currently Docked</span>
+            <div id="docked-vehicles" class="info-list">
+              <p class="empty-state">Checking current visiting vehicles...</p>
+            </div>
+          </article>
+
+          <article class="info-card">
+            <span class="metric-label">Next Traffic</span>
+            <div id="next-traffic" class="info-list">
+              <p class="empty-state">Checking arrival and departure schedule...</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel ops-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Systems View</p>
+            <h2>Operational Telemetry</h2>
+          </div>
+        </div>
+
+        <div class="ops-grid">
+          <article class="info-card">
+            <span class="metric-label">Communication Link</span>
+            <strong id="tdrs-status">--</strong>
+            <p id="tdrs-detail" class="telemetry-note">Tracking and Data Relay status is estimating...</p>
+          </article>
+          <article class="info-card">
+            <span class="metric-label">Solar Array Articulation</span>
+            <strong id="solar-alpha">Alpha -- deg</strong>
+            <p id="solar-beta" class="telemetry-note">Beta -- deg</p>
+          </article>
+          <article class="info-card">
+            <span class="metric-label">Propulsion / Reboost</span>
+            <strong id="reboost-countdown">--</strong>
+            <p id="reboost-detail" class="telemetry-note">Awaiting reboost reference...</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel visuals-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Live Visuals &amp; Social</p>
+            <h2>External Views &amp; Crew Activity</h2>
+          </div>
+        </div>
+
+        <div class="visuals-grid">
+          <article class="info-card">
+            <div class="inline-heading">
+              <span class="metric-label">HDEV Earth View</span>
+              <a href="https://www.nasa.gov/live/" target="_blank" rel="noreferrer">NASA Live</a>
+            </div>
+            <div class="video-frame">
+              <iframe
+                src="https://www.youtube.com/embed/H999s0P1Er0?si=iss-live&amp;autoplay=0&amp;mute=1"
+                title="Live high definition Earth viewing from the ISS"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+            </div>
+            <p class="telemetry-note">NASA’s live space-station views can switch between live orbital video and standby footage depending on signal and lighting conditions.</p>
+          </article>
+
+          <article class="info-card">
+            <div class="inline-heading">
+              <span class="metric-label">Astronaut Activity</span>
+              <a href="https://www.nasa.gov/blogs/stationreport/" target="_blank" rel="noreferrer">Official daily report</a>
+            </div>
+            <strong id="activity-summary">Building crew activity snapshot...</strong>
+            <div id="activity-list" class="info-list">
+              <p class="empty-state">Preparing a current task summary from live mission context.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel personalize-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Personalization</p>
+            <h2>User View</h2>
+          </div>
+        </div>
+
+        <div class="info-stack">
+          <article class="info-card">
+            <div class="inline-heading">
+              <span class="metric-label">Sighting Opportunity</span>
+              <button id="use-location-button" class="action-button" type="button">Use My Location</button>
+            </div>
+            <strong id="pass-summary">Location not set</strong>
+            <p id="pass-detail" class="telemetry-note">Enable location to estimate the next visible ISS pass over your position.</p>
+          </article>
+
+          <article class="info-card">
+            <span class="metric-label">Night / Day Indicator</span>
+            <strong id="daylight-state">--</strong>
+            <p class="telemetry-note">The map shades the night side of Earth and draws the current terminator line.</p>
+          </article>
+        </div>
+      </section>
     </main>
   </div>
 
-  <script src="./dashboard.js"></script>
+  <script src="./mission-dashboard.js"></script>
 </body>
 </html>
